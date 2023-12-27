@@ -6,27 +6,22 @@ on: # トリガー条件を指定
 
 jobs: # ジョブの定義を開始
     formatter: # ジョブ名を指定
-        name: formatter # ジョブの名前
+        name: node-formatter # ジョブの名前
         runs-on: ubuntu-latest # Ubuntu Linux 上で実行
         strategy:
             matrix:
                 node-version: [18.x]
+
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 0
 
             - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
-
-            - name: Install npm
-              run: npm ci
-
-            - name: Format
-              run: npm run format
-
-            - name: Lint
-              run: npm run lint
+            - run: npm ci
+            - run: npm run format
+            - run: npm run lint
