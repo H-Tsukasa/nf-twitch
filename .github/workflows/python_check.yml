@@ -32,7 +32,3 @@ jobs: # ジョブの定義を開始
               run: black .
             - name: isort # isortを使用してインポートステートメントを整理
               run: isort .
-            - name: Auto Commit # 自動コミット
-              uses: stefanzweifel/git-auto-commit-action@v5 # 自動コミットアクションを使用
-              with:
-                  commit_message: Apply Code Formatter # コミットメッセージを指定

@@ -8,11 +8,25 @@ jobs: # ジョブの定義を開始
     formatter: # ジョブ名を指定
         name: formatter # ジョブの名前
         runs-on: ubuntu-latest # Ubuntu Linux 上で実行
+        strategy:
+            matrix:
+                node-version: [18.x]
         steps:
-            - uses: actions/checkout@v2
-            - name: Install packages
+            - name: Checkout repository
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node-version }}
+
+            - name: Install npm
               run: npm ci
-            - name: Prettier
+
+            - name: Format
               run: npm run format
+
             - name: Lint
               run: npm run lint
