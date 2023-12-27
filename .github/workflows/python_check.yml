@@ -6,7 +6,7 @@ on: # トリガー条件を指定
 
 jobs: # ジョブの定義を開始
     formatter: # ジョブ名を指定
-        name: formatter # ジョブの名前
+        name: python-formatter # ジョブの名前
         runs-on: ubuntu-latest # Ubuntu Linux 上で実行
         strategy: # マトリクス戦略の設定
             matrix:
@@ -32,7 +32,3 @@ jobs: # ジョブの定義を開始
               run: black .
             - name: isort # isortを使用してインポートステートメントを整理
               run: isort .
-            - name: Auto Commit # 自動コミット
-              uses: stefanzweifel/git-auto-commit-action@v5 # 自動コミットアクションを使用
-              with:
-                  commit_message: Apply Code Formatter # コミットメッセージを指定
