@@ -13,10 +13,12 @@ app.add_middleware(
     # expose_headers=["Example-Header"],  # フロントエンドがアクセスできるHTTPヘッダー情報
 )
 
+
 # / に対するGETリクエストに応答するエンドポイントを作成
 @app.get("/api/message")
 def read_root():
     return {"message": "Hello, World"}
+
 
 # /items/{item_id} に対するGETリクエストに応答するエンドポイントを作成
 @app.get("/api/items/{item_id}")

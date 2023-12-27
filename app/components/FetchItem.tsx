@@ -10,7 +10,6 @@ interface Props {
 const FetchItem = ({ itemId }: Props) => {
     const [item, setItem] = useState<Item | null>(null);
     const [error, setError] = useState<string | null>(null);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
