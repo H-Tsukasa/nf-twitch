@@ -1,6 +1,6 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import FetchItem from "@/components/FetchItem";
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import FetchItem from '@/components/FetchItem';
 
 const Home: NextPage = () => {
     return (
