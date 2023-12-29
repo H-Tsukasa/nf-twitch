@@ -2,7 +2,7 @@
 import { auth, db } from '@/lib/firebase';
 import { User } from '@/types/user';
 import { doc, getDoc, setDoc } from '@firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+import { Unsubscribe, onAuthStateChanged } from 'firebase/auth';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 type UserContextType = User | null | undefined;
@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<UserContextType>();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser): Promise<Unsubscribe> => {
             if (firebaseUser) {
                 //docでユーザの情報取得
                 const ref = doc(db, `users/${firebaseUser.uid}`);
