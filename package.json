@@ -7,7 +7,7 @@
         "next-dev": "next dev",
         "clean": "npx rimraf .next out",
         "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
-        "build": "npm run clean && next build",
+        "build": "next build",
         "start": "next start",
         "lint": "next lint",
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,json}'"
