@@ -4,8 +4,16 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 import firebase_admin
 from firebase_admin import auth, credentials
+import os
+import base64
+import json
+from dotenv import load_dotenv
 
-cred = credentials.Certificate("./serviceAccountKey.json")
+load_dotenv(override=True)
+tmp = os.getenv("FAST_FIREBASE_CREDENTIAL_JSON")
+tmp2 = base64.b64decode(tmp.encode())
+firebase_dict = json.loads(tmp2)
+cred = credentials.Certificate(firebase_dict)
 firebase_admin.initialize_app(cred)
 
 # FastAPIアプリケーションのインスタンスを作成

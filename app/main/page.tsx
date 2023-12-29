@@ -17,7 +17,6 @@ export default function Home() {
                 console.error(error?.code);
             })
             .then(async () => {
-                setWaiting(false);
                 await auth.currentUser?.getIdToken(true).then((idToken) => {
                     //サーバ側で認証
                     verify_token(idToken).catch((error) => {
@@ -25,13 +24,14 @@ export default function Home() {
                         console.error(error?.code);
                     });
                 });
+                setWaiting(false);
             });
     };
 
     return (
         <div>
             {user === null && !waiting && <button onClick={signIn}>ログイン</button>}
-            {user && (
+            {user && !waiting && (
                 <div>
                     <div>
                         {user.name}, {user.id}
