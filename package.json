@@ -5,8 +5,9 @@
     "scripts": {
         "fastapi-dev": "pip3 install -r requirements.txt && python3 -m uvicorn api.index:app --reload",
         "next-dev": "next dev",
+        "clean": "npx run rimraf .next out",
         "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
-        "build": "next build",
+        "build": "npm run clean && next build",
         "start": "next start",
         "lint": "next lint",
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,json}'"
@@ -30,6 +31,7 @@
     "devDependencies": {
         "firebase": "^10.7.1",
         "prettier": "^3.1.1",
-        "query-string": "^8.1.0"
+        "query-string": "^8.1.0",
+        "rimraf": "^5.0.5"
     }
 }
