@@ -10,7 +10,7 @@ import json
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-tmp = os.getenv("FAST_FIREBASE_CREDENTIAL_JSON")
+tmp = os.environ.get("FAST_FIREBASE_CREDENTIAL_JSON")
 tmp2 = base64.b64decode(tmp.encode())
 firebase_dict = json.loads(tmp2)
 cred = credentials.Certificate(firebase_dict)
