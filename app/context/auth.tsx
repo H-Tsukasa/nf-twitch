@@ -4,6 +4,8 @@ import { User } from '@/types/user';
 import { doc, getDoc, setDoc } from '@firebase/firestore';
 import { Unsubscribe, onAuthStateChanged } from 'firebase/auth';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 
 type UserContextType = User | null | undefined;
 
@@ -11,6 +13,8 @@ const AuthContext = createContext<UserContextType>(undefined);
 
 // 以下を追加
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+    const router = useRouter()
+
     const [user, setUser] = useState<UserContextType>();
 
     useEffect(() => {
@@ -27,6 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     const appUser: User = {
                         id: firebaseUser.uid,
                         name: firebaseUser.displayName!,
+                        photoURL: firebaseUser.photoURL!,
                     };
 
                     setDoc(ref, appUser).then(() => {
@@ -35,6 +40,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 }
             } else {
                 setUser(null);
+                router.refresh()
+                router.push("/sign-in")
             }
 
             return unsubscribe;
