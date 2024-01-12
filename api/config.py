@@ -3,7 +3,6 @@ import os
 import base64
 import json
 from dotenv import load_dotenv
-import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
