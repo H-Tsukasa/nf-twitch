@@ -17,11 +17,10 @@ print(lines[0])
 url = "https://api.twitch.tv/helix/videos"
 headers = {'Authorization': os.environ.get("AUTHORIZATION_TWITCH"), "Client-ID": os.environ.get("CLIENT_ID_TWITCH")}
 
-params = {"user_id": "49207184", "first": 100}
+params = {"user_id": "102631269", "first": 100}
 response = requests.get(url, headers=headers, params=params)
 json_data = json.loads(response.text)
 data = json_data["data"]
-print(data[40])
 db = config.session()
 
 videos = []
@@ -43,5 +42,5 @@ for i, d in enumerate(data):
                 )
             videos.append(video)
 for video in videos:
-    crud.create_streamer_video(db=db, video=video, streamer_id=1)
+    crud.create_streamer_video(db=db, video=video, streamer_id=75)
 db.close()

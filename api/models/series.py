@@ -13,9 +13,11 @@ from ..config import Base
 class Series(Base):
     __tablename__ = "series"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(String(30))
     name: Mapped[str] = mapped_column(String(100))
     date_start: Mapped[str] = mapped_column(String(30))
     date_end: Mapped[str] = mapped_column(String(30))
     game_id: Mapped[str] = mapped_column(String(20), nullable=True)
+    thumbnail_url: Mapped[str] = mapped_column(String(300), nullable=True)
 
     streamers: Mapped[list["Streamers"]] = relationship("Streamer", secondary="streamer_series", back_populates="series", primaryjoin="StreamerSeries.series_id == Series.id")

@@ -17,7 +17,7 @@ print(lines[0])
 url = "https://api.twitch.tv/helix/clips"
 headers = {'Authorization': os.environ.get("AUTHORIZATION_TWITCH"), "Client-ID": os.environ.get("CLIENT_ID_TWITCH")}
 
-params = {"broadcaster_id": "49207184", "first": 100, "started_at": "2023-12-01T00:00:00Z", "ended_at": "2024-01-05T00:00:00Z"}
+params = {"broadcaster_id": "102631269", "first": 100, "started_at": "2023-12-01T00:00:00Z", "ended_at": "2024-01-05T00:00:00Z"}
 response = requests.get(url, headers=headers, params=params)
 json_data = json.loads(response.text)
 data = json_data["data"]
@@ -39,5 +39,5 @@ for d in data:
             )
         clips.append(clip)
 for clip in clips:
-    crud.create_streamer_clip(db=db, clip=clip, streamer_id=1)
+    crud.create_streamer_clip(db=db, clip=clip, streamer_id=75)
 db.close()

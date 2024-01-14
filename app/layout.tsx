@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 
 import { AuthProvider } from '@/context/auth';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { ModalProvider } from '@/components/providers/modal-provider';
 
 import { Header } from '@/components/header';
 
@@ -24,7 +25,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     storageKey="nf-theme"
                 >
                     <AuthProvider>
-                        <Header />{children}
+                        <Header />
+                        <ModalProvider />
+                        {children}
                     </AuthProvider>
                 </ThemeProvider>
             </body>

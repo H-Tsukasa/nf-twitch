@@ -103,12 +103,12 @@ class SeriesBase(BaseModel):
     uuid: str
     game_id: Optional[str] = None
     user_id: str
+    thumbnail_url: Optional[str] = None
     
-
 class Streamer(StreamerBase):
     id: int
-    videos: List[Video] = []
-    clips: List[Clip] = []
+    # videos: List[Video] = []
+    # clips: List[Clip] = []
     # series: Optional[List[SeriesBase]]
     
     class Config:
@@ -129,6 +129,11 @@ class Series(SeriesBase):
 
 
 # association
+
+class PostAssociation(BaseModel):
+    streamer_uuid: str
+    series_id: int
+
 class AssociationBase(BaseModel):
     streamer_uuid: str
     series_uuid: str
