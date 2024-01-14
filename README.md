@@ -1,8 +1,6 @@
 <p align="center">
-  <a href="https://nextjs-fastapi-starter.vercel.app/">
     <img src="./public/logo.svg" height="96">
     <h3 align="center">NF-tiwtch</h3>
-  </a>
 </p>
 
 <p align="center">複数のストリーマーの配信・クリップを簡単に確認</p>
