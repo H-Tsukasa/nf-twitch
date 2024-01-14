@@ -38,10 +38,11 @@ const SignIn = () => {
         <div>
             {user === null && !waiting && (
                 <div>
-                    <div className="font-bold text-3xl mt-32">
+                    <div className="font-bold text-3xl mt-32 mx-auto">
                         <Image src="/logo.svg" alt="logo" width={1000} height={1000} className="mt-1" priority={false}/>
-                        <div className='text-center text-4xl'>ストリーマー同士の配信・クリップを簡単に確認</div>
+                        <div className='text-center text-4xl mb-10'>ストリーマー同士の配信・クリップを簡単に確認</div>
                     </div>
+                    <Image src="/app.png" height={1000} width={1000} alt="アプリの画像"></Image>
                     <div
                         onClick={signIn}
                         className="rounded-2xl bg-sky-400 hover:bg-sky-600 transition-all text-3xl font-bold text-white text-center p-3 mt-8 cursor-pointer"
