@@ -76,6 +76,10 @@ def get_series_by_id(db: Session, series_id: int):
     return db.query(models.Series).filter(models.Series.id == series_id).first()
 
 
+def get_series_by_user_id(db: Session, user_id: int):
+    return db.query(models.Series).filter(models.Series.user_id == user_id).all()
+
+
 def create_series(db: Session, series: schemas.SeriesCreate):
     db_series = models.Series(
             name=series.name,
@@ -83,7 +87,8 @@ def create_series(db: Session, series: schemas.SeriesCreate):
             date_end=series.date_end,
             game_id=series.game_id,
             uuid=str(uuid.uuid4()),
-            user_id=series.user_id
+            user_id=series.user_id,
+            thumbnail_url=series.thumbnail_url
         )
     db.add(db_series)
     db.commit()
@@ -95,16 +100,16 @@ def create_series(db: Session, series: schemas.SeriesCreate):
 # def get_streamer_by_series_id()
 
 
-def get_by_streamer_series_id(db: Session, streamer_series: schemas.Association):
-    sql = text(f"select * from association where streamer_uuid = '{streamer_series.streamer_uuid}' and series_uuid = '{streamer_series.series_uuid}'")
+def get_by_streamer_series_id(db: Session, streamer_uuid: str, series_uuid: str):
+    sql = text(f"select * from association where streamer_uuid = '{streamer_uuid}' and series_uuid = '{series_uuid}'")
     result = db.execute(sql)
     for row in result:
         dict_a = {"streamer_id": row[0], "series_id": row[0]}
         return dict_a
 
 
-def create_streamer_series(db: Session, streamer_series: schemas.Association):
-    sql = text(f"insert into association (streamer_uuid, series_uuid) values ('{streamer_series.streamer_uuid}', '{streamer_series.series_uuid}');")
+def create_streamer_series(db: Session, streamer_uuid: str, series_uuid: str):
+    sql = text(f"insert into association (streamer_uuid, series_uuid) values ('{streamer_uuid}', '{series_uuid}');")
     db.execute(sql)
     db.commit()
     return 
@@ -115,8 +120,8 @@ def get_video(db: Session, video_id: int):
     return db.query(models.Video).filter(models.Video.id == video_id).first()
 
 
-def get_videos_by_streamer_id(db: Session, streamer_id: int):
-    return db.query(models.Video).filter(models.Video.streamer_id == streamer_id).all()
+def get_videos_by_streamer_id(db: Session, streamer_id: int, skip: int = 0, limit: int = 100):
+    return db.query(models.Video).filter(models.Video.streamer_id == streamer_id).offset(skip).limit(limit).all()
 
 
 def get_video_by_video_number(db: Session, video_number: str):
@@ -153,8 +158,8 @@ def get_clip_by_clip_number(db: Session, clip_number: str):
     return db.query(models.Clip).filter(models.Clip.clip_number == clip_number).first()
 
 
-def get_clips_by_streamer_id(db: Session, streamer_id: int):
-    return db.query(models.Clip).filter(models.Clip.streamer_id == streamer_id).all()
+def get_clips_by_streamer_id(db: Session, streamer_id: int, skip: int = 0, limit: int = 100):
+    return db.query(models.Clip).filter(models.Clip.streamer_id == streamer_id).offset(skip).limit(limit).all()
 
 
 def get_clips(db: Session, skip: int = 0, limit: int = 100):

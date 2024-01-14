@@ -4,8 +4,9 @@ import { login, logout, verify_token } from '@/lib/auth';
 import { useState } from 'react';
 import { auth } from '@/lib/firebase';
 import { redirect } from "next/navigation";
+import Image from 'next/image';
 
-import { OverlaySpinner } from "@/components/OverlaySpinner"
+import { OverlaySpinner } from "@/components/overlay-spinner"
 
 const SignIn = () => {
     const user = useAuth();
@@ -37,8 +38,9 @@ const SignIn = () => {
         <div>
             {user === null && !waiting && (
                 <div>
-                    <div className="text-rose-500 font-bold text-3xl mt-8">
-                        アプリを利用するにはログインが必要です
+                    <div className="font-bold text-3xl mt-32">
+                        <Image src="/logo.svg" alt="logo" width={1000} height={1000} className="mt-1" priority={false}/>
+                        <div className='text-center text-4xl'>ストリーマー同士の配信・クリップを簡単に確認</div>
                     </div>
                     <div
                         onClick={signIn}

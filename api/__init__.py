@@ -110,6 +110,17 @@ def read_series(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     series = crud.get_series(db, skip=skip, limit=limit)
     return series
 
+@app.get("/api/series/{series_id}", response_model=schemas.Series)
+def read_series_by_id(series_id: int, db: Session = Depends(get_db)):
+    series = crud.get_series_by_id(db=db, series_id=series_id)
+    return series
+
+
+@app.get("/api/series/user_id/{user_id}", response_model=List[schemas.Series])
+def read_series_by_user_id(user_id: str, db: Session = Depends(get_db)):
+    series = crud.get_series_by_user_id(db=db, user_id=user_id)
+    return series
+
 
 @app.post("/api/series/", response_model=schemas.Series)
 def create_series(series: schemas.SeriesCreate, db: Session = Depends(get_db)):
@@ -133,11 +144,12 @@ def read_series_by_streamer_id(streamer_id: int, db: Session = Depends(get_db)):
 
 # streamerとseriesの登録
 @app.post("/api/streamer_series/", response_model=schemas.Association)
-def create_association(streamer_series: schemas.AssociationCreate, db: Session = Depends(get_db)):
-    db_s = crud.get_by_streamer_series_id(db=db, streamer_series=streamer_series)
+def create_association(streamer_series: schemas.PostAssociation, db: Session = Depends(get_db)):
+    db_series = crud.get_series_by_id(db=db, series_id=streamer_series.series_id)
+    db_s = crud.get_by_streamer_series_id(db=db, streamer_uuid=streamer_series.streamer_uuid, series_uuid=db_series.uuid)
     if db_s:
         raise HTTPException(status_code=400, detail="Association already registered")
-    crud.create_streamer_series(streamer_series=streamer_series, db=db)
+    crud.create_streamer_series(db=db, streamer_uuid=streamer_series.streamer_uuid, series_uuid=db_series.uuid)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"msg": "Success"})
 
 # video
@@ -147,11 +159,27 @@ def read_videos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return videos
 
 
+@app.get("/api/videos/{streamer_id}", response_model=List[schemas.Video])
+def read_videos_by_streamer_id(streamer_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    videos = crud.get_videos_by_streamer_id(db, skip=skip, limit=limit, streamer_id=streamer_id)
+    return videos
+
+
 # clip
 @app.get("/api/clips/", response_model=List[schemas.Clip])
 def read_clips(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     clips = crud.get_clips(db, skip=skip, limit=limit)
     return clips
+
+
+@app.get("/api/clips/{streamer_id}", response_model=List[schemas.Clip])
+def read_clips_by_streamer_id(streamer_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    clips = crud.get_clips_by_streamer_id(db, skip=skip, limit=limit, streamer_id=streamer_id)
+    return clips
+
+
+# videoとclipの取得
+
 
 # firebaseの認証
 class JwtToken(BaseModel):

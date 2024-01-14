@@ -47,6 +47,7 @@ class Streamer(Base):
         secondaryjoin="foreign(association.c.series_uuid) == Series.uuid",
     )
 
+
 class Series(Base):
     __tablename__ = "series"
     __table_args__ = (
@@ -59,6 +60,7 @@ class Series(Base):
     date_end: Mapped[str] = mapped_column(String(30))
     game_id: Mapped[str] = mapped_column(String(20), nullable=True)
     user_id: Mapped[str] = mapped_column(String(30))
+    thumbnail_url: Mapped[str] = mapped_column(String(300), nullable=True)
     
 
     streamers: Mapped[list["Streamers"]] = relationship(

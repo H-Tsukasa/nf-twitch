@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    headers: [
+        {
+             key: 'X-Frame-Options',
+             value: 'SAMEORIGIN'
+        },
+    ],
+    images: {
+        domains: ["static-cdn.jtvnw.net"]
+    },
     rewrites: async () => {
         return [
             {
@@ -29,11 +38,11 @@ const nextConfig = {
         outputFileTracingExcludes: {
             '*': [
                 // prettier-ignore
-                './.next',
-                './.next/**',
-                'node_modules/@swc/core-linux-x64-gnu',
-                'node_modules/@swc/core-linux-x64-musl',
-                'node_modules/@esbuild/linux-x64',
+                // './.next',
+                // './.next/**',
+                // 'node_modules/@swc/core-linux-x64-gnu',
+                // 'node_modules/@swc/core-linux-x64-musl',
+                // 'node_modules/@esbuild/linux-x64',
             ],
         },
     },

@@ -1,4 +1,4 @@
-import { OverlaySpinner } from "@/components/OverlaySpinner";
+import { OverlaySpinner } from "@/components/overlay-spinner";
 
 export default function Loading() {
     return (

@@ -26,7 +26,7 @@ export const verify_token = async (token: string): Promise<void> => {
             if (response.data.uid == auth.currentUser?.uid) {
                 console.log('Backend側の認証成功');
             } else {
-                console.log('認証失敗，ログインし直し');
+                console.log('認証失敗');
                 logout();
             }
         })

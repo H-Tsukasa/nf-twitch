@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useAuth } from '@/context/auth';
 import { logout } from '@/lib/auth';
 
+import { LogOut, SettingsIcon } from 'lucide-react';
+
 import { UserAvatar } from "@/components/user-avatar";
 import {
     DropdownMenu,
@@ -16,7 +18,7 @@ import {
 export const Header = () => {
     const user = useAuth()
     return (
-        <div className="flex bg-gray-700 h-[55px]">
+        <div className="flex bg-gray-700 h-[55px] fixed left-0 right-0 top-0 z-30 px-5">
             <Link href="/main">
                 <Image src="/logo.svg" alt="logo" width={200} height={20} className="mt-2" priority={false}/>
             </Link>
@@ -36,17 +38,20 @@ export const Header = () => {
                         }
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                        className="w-40 text-xs font-medium text-black
-                    dark:text-neutral-400 space-y-[2px]"
+                        className="w-40 text-xs font-medium text-white bg-black space-y-[2px]"
                     >
                         <DropdownMenuItem
                             onClick={logout}
                             className='px-3 py-2 text-sm cursor-pointer'
                         >
-                            ログアウト
+                            <LogOut className='mr-4'></LogOut>
+                            <span>ログアウト</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator className=''/>
-                        <DropdownMenuItem>設定</DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <SettingsIcon className='mr-4'></SettingsIcon>
+                            <span>設定</span>
+                            </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

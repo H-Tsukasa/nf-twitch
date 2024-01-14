@@ -5,5 +5,5 @@
 # python-dotenv==1.0.0
 # python-multipart
 # sqlalchemy
-# # mysqlclient
+# mysqlclient
 # mysql-connector-python
