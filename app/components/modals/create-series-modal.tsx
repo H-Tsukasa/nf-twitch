@@ -32,7 +32,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { useMemo } from "react";
-import apiClient from "@/apiClient";
+import apiClient from "@/hooks/api-client";
 
 import { useAuth } from "@/context/auth";
 import { User } from "@/types/user";

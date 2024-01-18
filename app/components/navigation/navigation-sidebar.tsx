@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 import { Series } from "@/types/series";
 import { User } from "@/types/user";
-import apiClient from "@/apiClient";
+import apiClient from "@/hooks/api-client";
 import { useAuth } from "@/context/auth";
 import { useParams } from "next/navigation";
 

@@ -1,6 +1,6 @@
 "use client"
 
-import apiClient from "@/apiClient";
+import apiClient from "@/hooks/api-client";
 
 import { ChangeEventHandler, useEffect, useState } from "react";
 

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { Series } from "@/types/series";
-import apiClient from "@/apiClient";
+import apiClient from "@/hooks/api-client";
 import { User } from "@/types/user";
 import { CalendarDays, Plus, Router } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
