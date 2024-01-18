@@ -1,0 +1,30 @@
+version: '3'
+services:
+  
+  mysql:
+    container_name: mysql_container
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root_thrd_123
+      MYSQL_DATABASE: dbtest
+      MYSQL_USER: thrd
+      MYSQL_PASSWORD: pass
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3308:3308
+    networks:
+      app_net:
+        ipv4_address: 192.168.240.4
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.240.0/20
+          gateway: 192.168.240.1

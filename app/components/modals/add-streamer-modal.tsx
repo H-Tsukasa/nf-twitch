@@ -28,7 +28,7 @@ import { Button } from "@/components/ui/button";
 import { useParams, useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { useMemo, useState } from "react";
-import apiClient from "@/apiClient";
+import apiClient from "@/hooks/api-client";
 import { Streamer } from "@/types/streamer";
 import { useEffect } from "react";
 import { ScrollArea } from "../ui/scroll-area";
