@@ -4,21 +4,27 @@ import { Separator } from "@/components/ui/separator";
 
 import { NavigationAction } from "./navigation-action";
 import { NavigationItem } from "./navigation-item";
+
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation"
 
 import { Series } from "@/types/series";
 import { User } from "@/types/user";
+
 import apiClient from "@/hooks/api-client";
-import { useAuth } from "@/context/auth";
-import { useParams } from "next/navigation";
+import { useAuth } from "@/context/auth";;
+
+import { OverlaySpinner } from "@/components/overlay-spinner";
 
 export const NavigationSidebar = () => {
     const user = useAuth() as User
     const params = useParams()
     const [series, setSeries] = useState<Series[]>([])
     const [error, setError] = useState<string | null>(null);
+    const [isLoading, setLoading] = useState<boolean>(false);
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true)
             if(series.length==0){
                 try {
                     const response = await apiClient.get<Series[]>(`/series/user_id/${user.id}`);
@@ -42,9 +48,14 @@ export const NavigationSidebar = () => {
                     }
                 }
             }
+            setLoading(false)
         };
         fetchData();
     }, [params]);
+
+    if(isLoading){
+        return <OverlaySpinner></OverlaySpinner>
+    }
 
     return (  <div className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] py-3">
     <NavigationAction />

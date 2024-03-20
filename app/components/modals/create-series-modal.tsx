@@ -41,6 +41,7 @@ import { CalendarDaysIcon } from "lucide-react";
 
 import { format } from "date-fns"
 import { useEffect } from "react";
+import { useQueryClient } from "react-query";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -71,6 +72,8 @@ const formSchema = z.object({
 export const CreateSeriesModal = () => {
   const user = useAuth() as User
 
+  const queryClient = useQueryClient()
+
   const { isOpen, onClose, type } = useModal();
   const router = useRouter();
 
@@ -100,8 +103,8 @@ export const CreateSeriesModal = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const res = await apiClient.post(`/series`, values);
-      console.log(res.data.id)
       form.reset();
+      await queryClient.invalidateQueries(["series"])
       onClose();
       router.refresh()
       router.push(`/series/${res.data.id}`)

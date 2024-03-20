@@ -1,44 +1,56 @@
 "use client"
-import { useAuth } from "@/context/auth";
-import { OverlaySpinner } from "@/components/overlay-spinner";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useQuery } from 'react-query';
+
+import { CalendarDays, Plus, Router } from "lucide-react";
+
+import { useAuthUser } from "@react-query-firebase/auth";
+import { auth } from "@/lib/firebase";
 
 import { Series } from "@/types/series";
+
 import apiClient from "@/hooks/api-client";
-import { User } from "@/types/user";
-import { CalendarDays, Plus, Router } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
 
-import { format, getDate, getMonth, getYear } from "date-fns"
-
 import { ActionTooltip } from "@/components/action-tooltip";
+import { OverlaySpinner } from "@/components/overlay-spinner";
 
-const Home = () => {
-    const user = useAuth() as User
+const Main = () => {
+    const user = useAuthUser(["user"], auth);
     const router = useRouter()
     const { onOpen } = useModal();
-    const [series, setSeries] = useState<Series[]>([])
-    const [error, setError] = useState<string | null>(null);
+    // const [series, setSeries] = useState<Series[]>([])
+    // const [isLoading, setLoading] = useState<boolean>(false);
+    // const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await apiClient.get<Series[]>(`/series/user_id/${user.id}`);
-                setSeries(response.data);
-            } catch (err) {
-                setError("データの取得に失敗しました。");
-            }
-        };
-        fetchData();
-    }, [user]);
-    if(!user){
+    // 時系列に遷移する処理
+    const moveSeries = (series_id: Number) => {
+        router.push(`/series/${series_id}`)
+    }
+
+    // 時系列の取得
+    const fetchSeries = async () => {
+        const { data } = await apiClient.request<Series[]>({
+            url: `/series/user_id/${user.data?.uid}`,
+            method: "GET"
+        })
+        return data
+    };
+    const { data: series, isLoading, error } = useQuery(['series'], fetchSeries, {
+        enabled: !!user.data,
+    })
+    
+    if(error){
+        return <div>エラー</div>
+    }
+
+    if(isLoading){
         return <OverlaySpinner></OverlaySpinner>
     }
 
-    const moveSeries = (series_id: Number) => {
-        router.push(`/series/${series_id}`)
+    if(!user.data){
+        return <OverlaySpinner></OverlaySpinner>
     }
     
     return (
@@ -56,7 +68,7 @@ const Home = () => {
                 </div>
                 </button>
             </ActionTooltip>
-            {series.map((s) => (
+            {series?.map((s) => (
                 <div 
                 key={String(s.id)} 
                 className="mb-20 mr-20 h-[250px] w-[250px] p-5 rounded-[24px] transition-all border border-black border-opacity-30 hover:rounded-[16px]  overflow-hidden items-center justify-center bg-background dark:bg-neutral-700 cursor-pointer hover:bg-emerald-500  relative top-0 right-0 hover:top-[-3px] hover:right-[5px] hover:shadow-md " 
@@ -77,4 +89,4 @@ const Home = () => {
     );
 }
 
-export default Home
+export default Main

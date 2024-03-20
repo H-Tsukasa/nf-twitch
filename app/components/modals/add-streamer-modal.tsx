@@ -4,6 +4,9 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useQueryClient } from "react-query";
 
 import {
   Dialog,
@@ -23,16 +26,14 @@ import {
 } from "@/components/ui/form";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useParams, useRouter } from "next/navigation";
-import { useModal } from "@/hooks/use-modal-store";
-import { useMemo, useState } from "react";
-import apiClient from "@/hooks/api-client";
-import { Streamer } from "@/types/streamer";
-import { useEffect } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { StreamerCard } from "../streamer/streamer-card";
+
+import { useModal } from "@/hooks/use-modal-store";
+import apiClient from "@/hooks/api-client";
+
+import { Streamer } from "@/types/streamer";
 
 const formSchema = z.object({
         streamer_uuid: z.string().min(1),
@@ -46,22 +47,34 @@ const formSchema = z.object({
 );
 
 export const AddStreamerModal = () => {
-  const params = useParams()
-  const { isOpen, onClose, type } = useModal();
+  // const params = useParams()
+  const { isOpen, onClose, type, series_id } = useModal();
   const router = useRouter();
 
   const isModalOpen = isOpen && type === "addStreamer";
   
   // formデータの定義
+  const defaultValues = useMemo(() =>{
+    return {
+      streamer_uuid: "",
+      series_id: Number(series_id)
+    }
+    }, [series_id])
+  
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-        streamer_uuid: "",
-        series_id: Number(params.seriesId)
-    },
+    defaultValues: defaultValues,
   });
 
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues])
+
+  // form.setValue("series_id", Number(series_id))
+
   const isLoading = form.formState.isSubmitting;
+
+  const queryClient = useQueryClient()
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -69,8 +82,8 @@ export const AddStreamerModal = () => {
       form.reset();
       setSelectedStreamer(undefined)
       onClose();
+      await queryClient.invalidateQueries(["streamers", series_id])
       router.refresh()
-      location.reload()
     } catch (error) {
       console.log(error);
     } finally{
@@ -154,14 +167,16 @@ export const AddStreamerModal = () => {
                   </FormItem>
                 )}
                 />
-              <div>選択中
+              <div>
                 {selectedStreamer && (
-                <div className="flex">
-                  <div className="h-[60px] w-[60px] rounded-full group relative overflow-hidden">
-                    <Image sizes="500px" fill src={selectedStreamer.profile_image_url} alt={selectedStreamer.profile_image_url}/>
+                  <div>選択中
+                    <div className="flex">
+                      <div className="h-[60px] w-[60px] rounded-full group relative overflow-hidden">
+                        <Image sizes="500px" fill src={selectedStreamer.profile_image_url} alt={selectedStreamer.profile_image_url}/>
+                      </div>
+                      <div className="font-bold m-auto text-xl overflow-hidden">{selectedStreamer.display_name}</div>
+                    </div>
                   </div>
-                  <div className="font-bold m-auto text-xl overflow-hidden">{selectedStreamer.display_name}</div>
-                </div>
                 )}
               </div>
             </div>

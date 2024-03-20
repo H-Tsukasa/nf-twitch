@@ -5,14 +5,17 @@ from .. import models
 import uuid
 
 
+# ストリーマーの取得
 def get_streamer(db: Session, streamer_id: int):
     return db.query(models.Streamer).filter(models.Streamer.id == streamer_id).first()
 
 
+# プロフィールIDによるストリーマーの取得
 def get_streamer_by_profile_id(db: Session, profile_id: str):
     return db.query(models.Streamer).filter(models.Streamer.profile_id == profile_id).first()
 
 
+# 複数のストリーマーの取得
 def get_streamers(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Streamer).offset(skip).limit(limit).all()
 

@@ -1,9 +1,10 @@
 from fastapi.testclient import TestClient
 
-from ..main import app
-from ..models import Video
+from ...main import app
+from ...models import Video
 
 client = TestClient(app)
+
 
 def test_read_videos(test_db):
     
@@ -118,9 +119,6 @@ def test_read_videos_by_streamer_id(test_db):
             "streamer_id": 1
         },
     ]
-    
-    print("ここだよ")
-    print(response.json())
     for actual, expected in zip(response.json(), expected_data):
         actual_set = set(actual.keys())
         actual_set.remove("id")  # idを除去

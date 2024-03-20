@@ -15,6 +15,7 @@ def read_series(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     series = crud.series.get_series(db, skip=skip, limit=limit)
     return series
 
+
 @router.get("/api/series/{series_id}", response_model=schemas.Series)
 def read_series_by_id(series_id: int, db: Session = Depends(get_db)):
     series = crud.series.get_series_by_id(db=db, series_id=series_id)
