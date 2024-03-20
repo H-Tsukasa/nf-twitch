@@ -1,6 +1,6 @@
 <p align="center">
     <img src="./public/logo.svg" height="96">
-    <h3 align="center">NF-tiwtch</h3>
+    <h3 align="center">Time-tiwtch</h3>
 </p>
 
 <p align="center">複数のストリーマーの配信・クリップを簡単に確認</p>
