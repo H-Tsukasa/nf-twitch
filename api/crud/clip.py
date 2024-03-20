@@ -3,6 +3,7 @@ from .. import models
 from .. import schemas
 
 
+# クリップの取得
 def get_clip(db: Session, clip_id: int):
     return db.query(models.Clip).filter(models.Clip.id == clip_id).first()
 
@@ -17,6 +18,7 @@ def get_clips_by_streamer_id(db: Session, streamer_id: int, skip: int = 0, limit
     return db.query(models.Clip).filter(models.Clip.streamer_id == streamer_id).offset(skip).limit(limit).all()
 
 
+# 複数のクリップの取得
 def get_clips(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Clip).offset(skip).limit(limit).all()
 

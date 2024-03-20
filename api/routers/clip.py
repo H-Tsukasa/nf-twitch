@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 router = APIRouter()
 
+
 @router.get("/api/clips/", response_model=List[schemas.Clip])
 def read_clips(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     clips = crud.clip.get_clips(db, skip=skip, limit=limit)

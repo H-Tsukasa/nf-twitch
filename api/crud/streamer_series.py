@@ -11,7 +11,7 @@ def get_by_streamer_series_id(db: Session, streamer_uuid: str, series_uuid: str)
         return dict_a
 
 
-# ストリーマーと時系列の関係登録
+# ストリーマーと時系列の関係を登録
 def create_streamer_series(db: Session, streamer_uuid: str, series_uuid: str):
     sql = text(f"insert into association (streamer_uuid, series_uuid) values ('{streamer_uuid}', '{series_uuid}');")
     db.execute(sql)

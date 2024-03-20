@@ -9,12 +9,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useModal } from "@/hooks/use-modal-store";
 
+import { useParams } from "next/navigation";
+
 interface SeriesHeaderProps{
     name: string
 }
 
 export const SeriesHeader = ({name}: SeriesHeaderProps) => {
     const { onOpen } = useModal();
+    const params = useParams();
     return ( 
         <div className="">
             <DropdownMenu>
@@ -35,7 +38,7 @@ export const SeriesHeader = ({name}: SeriesHeaderProps) => {
                         <span>設定</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                        onClick={() => onOpen("addStreamer")}
+                        onClick={() => onOpen("addStreamer", params.seriesId)}
                         className='px-3 py-2 text-sm cursor-pointer hover:text-black hover:bg-white'
                     >
                         <Users className="mr-4"></Users>

@@ -1,8 +1,10 @@
 "use client"
 import Image from 'next/image';
 import Link from 'next/link';
-import { useAuth } from '@/context/auth';
 import { logout } from '@/lib/auth';
+
+import { auth } from '@/lib/firebase';
+import { useAuthUser } from '@react-query-firebase/auth';
 
 import { LogOut, SettingsIcon } from 'lucide-react';
 
@@ -16,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export const Header = () => {
-    const user = useAuth()
+    const user = useAuthUser(["user"], auth)
     return (
         <div className="flex bg-gray-700 h-[55px] fixed left-0 right-0 top-0 z-30 px-5">
             <Link href="/main">
@@ -26,16 +28,23 @@ export const Header = () => {
                 <DropdownMenu>
                     <DropdownMenuTrigger className="focus:outline-non" asChild>
                         
-                        {/* {user && user?.photoURL && (
-                                <UserAvatar src={user.photoURL}/>
-                            ) */}
-                        {/* }    */}
-                        {user && !user?.photoURL && (
+                        {/* {user.data && user.data?.photoURL && (
+                                <UserAvatar src={user.data.photoURL}/>
+                            ) 
+                        } */}
+                        {/* {user.data && !user.data.photoURL && (
                                 <div className='h-7 w-7 md:h-10 md:w-10 rounded-full bg-blue-700 text-center ali cursor-pointer text-white'>
-                                    <div className="pt-[2px] md:pt-2">{user?.name[0]}</div>
+                                    <div className="pt-[2px] md:pt-2">T</div>
+                                </div>  
+                            )
+                        } */}
+                        {user.data && user.data.displayName && (
+                                <div className='h-7 w-7 md:h-10 md:w-10 rounded-full bg-blue-700 text-center ali cursor-pointer text-white'>
+                                    <div className="pt-[2px] md:pt-2">{user.data.displayName[0]}</div>
                                 </div>  
                             )
                         }
+
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                         className="w-40 text-xs font-medium text-white bg-black space-y-[2px]"

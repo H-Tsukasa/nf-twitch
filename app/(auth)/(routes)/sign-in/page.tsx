@@ -2,17 +2,22 @@
 import { useAuth } from '@/context/auth';
 import { login, logout, verify_token } from '@/lib/auth';
 import { useState } from 'react';
-import { auth } from '@/lib/firebase';
+// import { auth } from '@/lib/firebase';
 import { redirect } from "next/navigation";
 import Image from 'next/image';
+
+import { useAuthUser } from "@react-query-firebase/auth";
+import { auth } from "@/lib/firebase";
 
 import { OverlaySpinner } from "@/components/overlay-spinner"
 
 const SignIn = () => {
-    const user = useAuth();
+    const user = useAuthUser(["user"], auth);
+    // console.log(user?.data?.displayName)
+    // console.log(user)
     const [waiting, setWaiting] = useState<boolean>(false);
     // 既にログインしている場合はmainページに遷移
-    if (user) {
+    if (user.data) {
         return redirect('/main');
     }
     //ログイン処理
@@ -36,8 +41,8 @@ const SignIn = () => {
     };
     return (
         <div>
-            {user === null && !waiting && (
-                <div>
+            {user.data === null && !waiting && (
+                <div className="mb-5">
                     <div className="font-bold text-3xl mt-32 mx-auto">
                         <Image src="/logo.svg" alt="logo" width={1000} height={1000} className="mt-1" priority={false}/>
                         <div className='text-center text-4xl mb-10'>ストリーマー同士の配信・クリップを簡単に確認</div>

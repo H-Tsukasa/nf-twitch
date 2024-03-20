@@ -23,16 +23,18 @@ interface ModalData {
 
 interface ModalStore {
     type: ModalType | null;
+    series_id: string | null;
     data: ModalData;
     isOpen: boolean;
-    onOpen: (type: ModalType, data?: ModalData) => void;
+    onOpen: (type: ModalType, series_id?: string, data?: ModalData) => void;
     onClose: () => void;
 }
 
 export const useModal = create<ModalStore>((set) => ({
     type: null,
+    series_id: "",
     data: {},
     isOpen: false,
-    onOpen: (type, data = {}) => set({ isOpen: true, type, data }),
+    onOpen: (type,  series_id = "", data = {}) => set({ isOpen: true, type, data, series_id }),
     onClose: () => set({ type: null, isOpen: false }),
 }));

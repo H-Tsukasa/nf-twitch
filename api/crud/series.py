@@ -5,12 +5,14 @@ from .. import models
 import uuid
 
 
-def get_series(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Series).offset(skip).limit(limit).all()
-
-
+# 時系列の取得
 def get_series_by_id(db: Session, series_id: int):
     return db.query(models.Series).filter(models.Series.id == series_id).first()
+
+
+# 複数の時系列の取得
+def get_series(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Series).offset(skip).limit(limit).all()
 
 
 # ユーザIDによる取得
